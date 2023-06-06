@@ -186,7 +186,9 @@ const initialPrompt = async () => {
         }
       }
     );
-  };const addEmployee = () => {
+  };
+  
+  const addEmployee = () => {
     db.query(
       `SELECT id, title FROM roles ORDER BY id ASC`,
       async function (err, results) {

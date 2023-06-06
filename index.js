@@ -135,3 +135,125 @@ const initialPrompt = async () => {
     console.table(data);
     initialPrompt();
   };
+
+  const addRole = () => {
+    db.query(
+      `SELECT id, dep_name FROM department`,
+      async function (err, results) {
+        if (err) {
+        } else {
+          
+          let departmentArray = results.map((obj) => {
+            return { value: obj.id, name: obj.dep_name };
+          });
+          // ask the user the questions for details on te role
+          await inquirer
+            .prompt([
+              {
+                type: 'input',
+                name: 'roleTitle',
+                message: 'What Role would you like to add?',
+              },
+              {
+                type: 'input',
+                name: 'roleSalary',
+                message: 'What is the salary of the Role?',
+              },
+              {
+                type: 'list',
+                name: 'roleDepartment',
+                message: 'What is the Department for the Role?',
+                choices: departmentArray,
+              },
+            ])
+            .then((answers) => {
+              // store the answers in a variable using dot notation
+              const title = answers.roleTitle;
+              const salary = answers.roleSalary;
+              const department = answers.roleDepartment;
+              let insertRole = `INSERT INTO roles (title, salary, department_id) VALUES ('${title}', ${salary}, ${department})`;
+              db.query(insertRole, function (err, results) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log('');
+                  console.log(colors.green('ROLE ADDED'));
+                  console.log('');
+                  initialPrompt();
+                }
+              });
+            });
+        }
+      }
+    );
+  };const addEmployee = () => {
+    db.query(
+      `SELECT id, title FROM roles ORDER BY id ASC`,
+      async function (err, results) {
+        if (err) {
+          console.log(err);
+        } else {
+          // map the results to a key : value pair for inquirer
+          let roleQueryArray = results.map((obj) => {
+            return { value: obj.id, name: obj.title };
+          });
+          const queryEmployees = `SELECT id, first_name, last_name FROM employees ORDER BY id ASC;`;
+          db.query(queryEmployees, async function (err, results) {
+            if (err) {
+              console.log(err);
+            } else {
+              let employeeQueryArray = results.map((obj) => {
+                return {
+                  value: obj.id,
+                  name: obj.first_name + ' ' + obj.last_name,
+                };
+              });
+              employeeQueryArray.push({ value: 'NULL', name: 'None' });
+              await inquirer
+                .prompt([
+                  {
+                    type: 'input',
+                    name: 'firstName',
+                    message: 'What is the employees First Name?',
+                  },
+                  {
+                    type: 'input',
+                    name: 'lastName',
+                    message: 'What is the employees Last Name?',
+                  },
+                  {
+                    type: 'list',
+                    name: 'employeeRole',
+                    message: 'What is the employees role?',
+                    choices: roleQueryArray,
+                  },
+                  {
+                    type: 'list',
+                    name: 'manager',
+                    message: 'Who is the employees Manager',
+                    choices: employeeQueryArray,
+                  },
+                ])
+                .then((answers) => {
+                  const first = answers.firstName;
+                  const last = answers.lastName;
+                  const role = answers.employeeRole;
+                  const manager = answers.manager;
+                  const addEmployeeQuery = `INSERT INTO employees (first_name, last_name, role_id, manager_id) 
+                VALUES ('${first}', '${last}', ${role}, ${manager})`;
+                  db.query(addEmployeeQuery, async function (err, results) {
+                    if (err) {
+                      console.log(err);
+                    }
+                  });
+                  console.log('');
+                  console.log(colors.green('EMPLOYEE ADDED'));
+                  console.log('');
+                  initialPrompt();
+                });
+            }
+          });
+        }
+      }
+    );
+  };

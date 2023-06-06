@@ -62,7 +62,7 @@ const initialPrompt = async () => {
       }
     });
   };
-  
+
   const viewAllEmployees = async () => {
     const viewEmployeesQuery = `SELECT 
     employees.id, 
@@ -95,3 +95,43 @@ const initialPrompt = async () => {
     initialPrompt();
   };
   
+  const viewAllDepartments = async () => {
+    const data = await new Promise((resolve, reject) => {
+      db.query(
+        `SELECT id, dep_name AS 'name' FROM department`,
+        (err, results) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+    console.log('');
+    console.log(colors.yellow('ALL DEPARTMENTS'));
+    console.log('');
+    console.table(data);
+    initialPrompt();
+  };
+  
+  const viewAllRoles = async () => {
+    const viewRolesQuery = `SELECT roles.id, roles.title, department.dep_name AS department, salary
+    FROM roles
+    INNER JOIN department ON roles.department_id = department.id
+    ORDER BY roles.id ASC`;
+    const data = await new Promise((resolve, reject) => {
+      db.query(viewRolesQuery, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+    console.log('');
+    console.log(colors.yellow('ALL ROLES'));
+    console.log('');
+    console.table(data);
+    initialPrompt();
+  };

@@ -1,7 +1,7 @@
 # Employee Tracker
 
 ## Description
-This is an interface, or content management system (CMS) that allows non-developers to view and interact with information stored in databases. It is a command-line application from scratch to manage a company's employee database powered by Node.js, Inquirer, and MySQL. 
+Hey everyone !! This is an interface, or content management system (CMS) that allows non-developers to view and interact with information stored in databases. It is a command-line application from scratch to manage a company's employee database powered by Node.js, Inquirer, and MySQL. 
 
 ## Table of Contents
 
@@ -69,7 +69,8 @@ npm packages used in this project:
 ## Screenshots
 
 View all examples:
-![View-all-emp-dept-roles-screenshot](https://user-images.githubusercontent.com/117237641/227391943-0c8e47ec-e0de-4589-8f7c-60b46e23794a.png)
+![View-all-emp-dept-roles-screenshot](./images/Screenshot%202023-06-08%20at%2011.02.09%20PM.png)
+
 
 
 ## License
@@ -78,8 +79,8 @@ Currently, there is no license for this project.
 
 ## Credits 🏆
 
-I'd like to thank my classmates (BJ Thompson and Blair Millet specifically), for teaching me cool things to do with inquirer, colors, and figlet. Also to save time with prompt questions and answers!
+I'd like to thank my classmates and TA's for helping me !!
 
 ## Contribute
 
-To contribute, please contact me!
+To contribute, please don't hesitate to contact me!
